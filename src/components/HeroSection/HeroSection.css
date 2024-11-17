@@ -1,0 +1,72 @@
+.hero-section-container {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#hero-title {
+    font-size: 38px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    color: #F6B332;
+    text-align: center;
+    margin: 0;
+}
+#hero-subtitle {
+    font-size: 20px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    color: #FFFFFF;
+    text-align: center;
+    margin-top: 20px;
+    margin: 0;
+    line-height: 1.5;
+}
+
+#button-container {
+    display: flex;
+    gap: 40px;
+    margin-top: 30px;
+}
+
+#submit-button, #view-button {
+    width: 200px;
+    height: 60px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 4px rgba(50, 50, 50, 0.25);
+}
+
+#submit-button {
+    background-color: #741918;
+    color: #F6B332;
+    border: 1px solid #741918;
+    cursor: pointer;
+    transition: background-color 0.3s, border 0.3s, color 0.3s;
+}
+#submit-button:hover {
+    background-color: #F6B332;
+    border: 1px solid #F6B332;
+    color: #741918;
+}
+
+#view-button {
+    background-color: #AAAAAA;
+    color: #1A1A1A;
+    border: 1px solid #999999;
+    cursor: pointer;
+    transition: background-color 0.3s, border 0.3s, color 0.3s;
+}
+#view-button:hover {
+    background-color: #1A1A1A;
+    border: 1px solid #1A1A1A;
+    color: #FFFFFF;
+}
