@@ -1,12 +1,16 @@
-a {
+/* General link styling */
+.menu-link {
     text-decoration: none;
     color: #FFFFFF;
     transition: color 0.3s;
 }
-a:hover {
+
+/* Hover effect for links */
+.menu-link:hover {
     color: #F6B332;
 }
 
+/* Navbar container styling */
 .navbar-container {
     display: flex;
     padding: 30px;
@@ -14,10 +18,12 @@ a:hover {
     align-items: center;
 }
 
+/* Logo styling */
 #city-logo {
     width: 180px;
 }
 
+/* Menu list styling */
 .menu-list {
     display: flex;
     gap: 50px;

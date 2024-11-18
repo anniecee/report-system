@@ -1,14 +1,19 @@
-import './App.css'
-import HeroSection from './components/HeroSection/HeroSection'
-import Navbar from './components/Navbar/Navbar'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import HeroSection from './components/HeroSection/HeroSection';
+import MapLeaflet from './components/MapLeaflet/MapLeaftlet';
+import Navbar from './components/Navbar/Navbar';
+
 
 function App() {
   return (
-    <>
-      <Navbar />
-      <HeroSection />
-    </>
-  )
+    <Router>
+      <Navbar/>
+      <Routes>
+        <Route path="/" element={<HeroSection />} /> {/* Homepage */}
+        <Route path="/view-all-reports" element={<MapLeaflet />} /> {/* Map Page */}
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;
