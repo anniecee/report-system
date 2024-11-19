@@ -3,10 +3,16 @@
     text-decoration: none;
     color: #FFFFFF;
     transition: color 0.3s;
+    scale: 1.0;
+    transition: scale 0.3s;
 }
 
 /* Hover effect for links */
 .menu-link:hover {
+    scale: 1.1;
+}
+
+.active-link {
     color: #F6B332;
 }
 
@@ -16,6 +22,8 @@
     padding: 30px;
     justify-content: space-between;
     align-items: center;
+    background-color: #33333334;
+    background: linear-gradient(to bottom, rgba(50, 0, 0, 0.5), rgba(255, 255, 255, 0));
 }
 
 /* Logo styling */
