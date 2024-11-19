@@ -1,18 +1,33 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css'; // Import Leaflet's default CSS
-import './MapLeaflet.css'; // Import your custom CSS
+import md5 from 'md5'; 
+import 'leaflet/dist/leaflet.css'; 
+import './MapLeaflet.css'; 
 
 const MapLeaflet: React.FC = () => {
-
-  const [showPanel, setShowPanel] = useState(false); // State to control side panel visibility
+  const [showPanel, setShowPanel] = useState(false); 
+  const [status, setStatus] = useState('Open'); 
+  const PASSWORD_HASH = 'd1859e6bd2c05d25d3d94bd1f0e67544'; // MD5 hash of 'welovenam'
 
   const handleMoreInfoClick = () => {
-    setShowPanel(true); // Show the side panel when "MORE INFO" is clicked
+    setShowPanel(true); 
   };
 
   const handleClosePanel = () => {
-    setShowPanel(false); // Close the side panel
+    setShowPanel(false); 
+  };
+
+  const handleChangeStatus = () => {
+    const password = prompt('Enter password to change status:');
+    if (password) {
+      const hashedPassword = md5(password);
+      if (hashedPassword === PASSWORD_HASH) {
+        setStatus((prevStatus) => (prevStatus === 'Open' ? 'Close' : 'Open'));
+        alert('Status updated successfully!');
+      } else {
+        alert('Incorrect password!');
+      }
+    }
   };
 
   return (
@@ -48,8 +63,10 @@ const MapLeaflet: React.FC = () => {
             <tr>
               <td>Vancouver</td>
               <td>Shooting</td>
-              <td>2024-11-18 (12:00PM)</td>
-              <td>Open</td>
+              <td>2024-11-18 (12:00 PM)</td>
+              <td style={{ color: status === 'Open' ? 'green' : 'red' }}>
+                {status}
+              </td>
               <td>
                 <button className="link-button" onClick={handleMoreInfoClick}>
                   MORE INFO
@@ -67,18 +84,25 @@ const MapLeaflet: React.FC = () => {
             <p><strong>Location:</strong> Vancouver</p>
             <p><strong>Type:</strong> Shooting</p>
             <p><strong>Time Reported:</strong> 2024-11-18 (12:00 PM)</p>
-            <p><strong>Status:</strong> Open</p>
+            <p>
+              <strong>Status:</strong>{' '}
+              <span style={{ color: status === 'Open' ? 'green' : 'red' }}>
+                {status}
+              </span>
+            </p>
             <p><strong>Description:</strong> ...</p>
+          </div>
+          <div className="panel-actions">
+            <button className="change-button" onClick={handleChangeStatus}>
+              Change Status
+            </button>
             <button className="close-button" onClick={handleClosePanel}>
               Close
             </button>
-            
           </div>
         </div>
       )}
-
     </div>
-    
   );
 };
 
