@@ -9,9 +9,11 @@ function App() {
     <Router>
       <Navbar />
       <Routes>
-        <Route path="/" element={<HeroSection />} /> {/* Homepage */}
-        <Route path="/view-all-reports" element={<MapLeaflet />} />{" "}
+        {/* Homepage */}
+        <Route path="/" element={<HeroSection />} /> 
         {/* Map Page */}
+        <Route path="/view-all-reports" element={<MapLeaflet />} />{" "}
+        {/* Report Page */}
         <Route path="/file-a-report" element={<Form />} /> {/* Form Page */}
       </Routes>
     </Router>

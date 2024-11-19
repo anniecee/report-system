@@ -14,7 +14,7 @@ function HeroSection() {
         helping first responders reach those in need faster.
       </p>
       <div id="button-container">
-        <button id="submit-button">Submit a Report</button>
+        <button id="submit-button" onClick={() => navigate('/file-a-report')}>Submit a Report</button>
         <button id="view-button" onClick={() => navigate('/view-all-reports')}>
           View All Reports
         </button>
