@@ -7,7 +7,7 @@ import './MapLeaflet.css';
 const MapLeaflet: React.FC = () => {
   const [showPanel, setShowPanel] = useState(false); 
   const [status, setStatus] = useState('Open'); 
-  const PASSWORD_HASH = 'd1859e6bd2c05d25d3d94bd1f0e67544'; // MD5 hash of 'welovenam'
+  const PASSWORD_HASH = '075ce5ba743720afbc7fb084cc975fe4'; // MD5 hash of 'namga'
 
   const handleMoreInfoClick = () => {
     setShowPanel(true); 
