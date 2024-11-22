@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Autocomplete from '../Geocoding/Autocomplete';
+import Autocomplete from '../Autocomplete/Autocomplete';
 import "./Form.css";
 
 const Form: React.FC = () => {
