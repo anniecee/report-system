@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import './Autocomplete.css'; // Import the CSS file for styling
 
 interface AutocompleteProps {
-  onSelect: (location: string) => void;
+  onSelect: (location: string, lat: string, lon: string) => void;
 }
 
 const Autocomplete: React.FC<AutocompleteProps> = React.memo(({ onSelect }) => {
   const [query, setQuery] = useState('');
-  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [suggestions, setSuggestions] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   // Set API key
@@ -25,8 +25,7 @@ const Autocomplete: React.FC<AutocompleteProps> = React.memo(({ onSelect }) => {
         const response = await fetch(`https://geocode.maps.co/search?q=${query}&api_key=${API_KEY}`);
         const data = await response.json();
         console.log('Data:', data);
-        const displayNames = data.map((item: any) => item.display_name);
-        setSuggestions(displayNames);
+        setSuggestions(data);
       } catch (error) {
         console.error('Error fetching suggestions:', error);
         setSuggestions([]);
@@ -38,10 +37,11 @@ const Autocomplete: React.FC<AutocompleteProps> = React.memo(({ onSelect }) => {
     fetchSuggestions();
   }, [query]);
 
-  const handleSelect = (suggestion: string) => {
-    setQuery(suggestion);
+  const handleSelect = (suggestion: any) => {
+    setQuery(suggestion.display_name);
     setSuggestions([]);
-    onSelect(suggestion);
+    console.log(`Selected location: ${suggestion.display_name}, Latitude: ${suggestion.lat}, Longitude: ${suggestion.lon}`);
+    onSelect(suggestion.display_name, suggestion.lat, suggestion.lon);
   };
 
   return (
@@ -58,7 +58,7 @@ const Autocomplete: React.FC<AutocompleteProps> = React.memo(({ onSelect }) => {
         <ul className="autocomplete-dropdown">
           {suggestions.map((suggestion, index) => (
             <li key={index} onClick={() => handleSelect(suggestion)} className="autocomplete-item">
-              {suggestion}
+              {suggestion.display_name}
             </li>
           ))}
         </ul>

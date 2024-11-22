@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useEffect } from "react";
 import Autocomplete from '../Geocoding/Autocomplete';
 import "./Form.css";
 
@@ -14,13 +13,6 @@ const Form: React.FC = () => {
     description: "",
   });
 
-  useEffect(() => {
-    console.log("Form mounted");
-    return () => {
-      console.log("Form unmounted");
-    };
-  }, []);
-
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -31,10 +23,11 @@ const Form: React.FC = () => {
     }));
   };
 
-  const handleLocationSelect = (location: string) => {
+  const handleLocationSelect = (location: string, lat: string, lon: string) => {
     setFormData((prevData) => ({
       ...prevData,
       location,
+      coordinate: `${lat}, ${lon}`,
     }));
   };
 
