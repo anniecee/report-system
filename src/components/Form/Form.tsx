@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
+import Autocomplete from '../Geocoding/Autocomplete';
 import "./Form.css";
 
 const Form: React.FC = () => {
@@ -12,6 +14,13 @@ const Form: React.FC = () => {
     description: "",
   });
 
+  useEffect(() => {
+    console.log("Form mounted");
+    return () => {
+      console.log("Form unmounted");
+    };
+  }, []);
+
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -19,6 +28,13 @@ const Form: React.FC = () => {
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
+    }));
+  };
+
+  const handleLocationSelect = (location: string) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      location,
     }));
   };
 
@@ -104,13 +120,8 @@ const Form: React.FC = () => {
                 <label htmlFor="location">
                   Location <span>(required)</span>
                 </label>
-                <input
-                  type="text"
-                  id="location"
-                  name="location"
-                  value={formData.location}
-                  onChange={handleInputChange}
-                  required
+                <Autocomplete
+                  onSelect={handleLocationSelect}
                 />
               </div>
               <div className="input-field">
