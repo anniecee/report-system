@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-interface Report {
+export interface Report {
   fullName: string;
   phoneNumber: string;
   location: string;
