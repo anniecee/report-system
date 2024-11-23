@@ -8,7 +8,12 @@
     top: 45%;
     left: 50%;
     transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 0.5s ease;
 }
+.hero-section-container.show {
+    opacity: 1;
+  }
 
 #hero-title {
     font-size: 38px;

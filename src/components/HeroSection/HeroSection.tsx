@@ -1,10 +1,20 @@
 import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import '../HeroSection/HeroSection.css';
 function HeroSection() {
   const navigate = useNavigate();
+  const [isVisible, setIsVisible] = useState(false);
 
+  useEffect(() => {
+    // Trigger the intro animation when the component mounts
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+    }, 0);
+
+    return () => clearTimeout(timer); // Cleanup the timer if the component unmounts
+  }, []);    
   return (
-    <section className="hero-section-container">
+    <section className={`hero-section-container ${isVisible ? 'show' : ''}`}>
       <p id="hero-title">
         Metro Vancouver <br />
         Emergency Reporting System

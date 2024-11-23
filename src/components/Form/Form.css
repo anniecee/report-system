@@ -132,11 +132,13 @@
 .confirm-button {
   background-color: #007bff;
   color: white;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .cancel-button {
   background-color: #666;
   color: white;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .confirm-button:hover {

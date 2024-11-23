@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Form.css";
 
 const Form: React.FC = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullName: "",
     phoneNumber: "",
@@ -53,7 +55,8 @@ const Form: React.FC = () => {
       description: "",
     });
 
-    alert("Emergency report submitted successfully!");
+    // this will redirect to the confirmation page
+    navigate("/confirmation-page");
   };
 
   return (
