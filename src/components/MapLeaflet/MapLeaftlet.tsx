@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import md5 from 'md5'; 
 import 'leaflet/dist/leaflet.css';
 import './MapLeaflet.css';
 import ReportsList, { Report } from '../Reports/ReportsList';
@@ -7,6 +8,8 @@ import ReportsList, { Report } from '../Reports/ReportsList';
 const MapLeaflet: React.FC = () => {
   const [showPanel, setShowPanel] = useState(false);
   const [selectedReport, setSelectedReport] = useState<Report | null>(null);
+  const [status, setStatus] = useState('Open'); 
+  const PASSWORD_HASH = '075ce5ba743720afbc7fb084cc975fe4'; // MD5 hash of 'namga'
 
   const handleMoreInfoClick = (report: Report) => {
     setSelectedReport(report);
@@ -16,6 +19,20 @@ const MapLeaflet: React.FC = () => {
   const handleClosePanel = () => {
     setShowPanel(false);
   };
+
+  const handleChangeStatus = () => {
+    const password = prompt('Enter password to change status:');
+    if (password) {
+      const hashedPassword = md5(password);
+      if (hashedPassword === PASSWORD_HASH) {
+        setStatus((prevStatus) => (prevStatus === 'Open' ? 'Close' : 'Open'));
+        alert('Status updated successfully!');
+      } else {
+        alert('Incorrect password!');
+      }
+    }
+  };
+
 
   return (
     <div className="map-container">
@@ -55,9 +72,14 @@ const MapLeaflet: React.FC = () => {
                 className="report-image"
               />
             )}
-            <button className="close-button" onClick={handleClosePanel}>
-              Close
-            </button>
+            <div className="panel-actions">
+                <button className="change-button" onClick={handleChangeStatus}>
+                Change Status
+                </button>
+                <button className="close-button" onClick={handleClosePanel}>
+                Close
+                </button>
+            </div>
           </div>
         </div>
       )}
