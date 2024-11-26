@@ -45,7 +45,7 @@ const Form: React.FC = () => {
     const newReport = {
       ...formData,
       timeReported: new Date().toLocaleString(), // add the time of submission
-      status: "Open", // this is by default
+      status: "OPEN", // this is by default
     };
 
     const updatedReports = [...existingReports, newReport];

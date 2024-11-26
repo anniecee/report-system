@@ -6,6 +6,15 @@
   padding: 0;
 }
 
+.map-subcontainer {
+    width: 100%;
+    height: 100%;
+    transition: width 0.3s ease;
+}
+.map-subcontainer.resize {
+    width: 75%;
+}
+
 .marker-table {
   margin-top: 0;
   padding: 0;
@@ -37,7 +46,7 @@ button.link-button {
   border: none;
   font-weight: bold;
   text-decoration: none;
-  padding: 4px 8px;
+  padding: 4px 8px 4px 0px; 
   cursor: pointer;
 }
 
@@ -50,25 +59,40 @@ button.link-button:hover {
   position: absolute;
   top: 0;
   right: 0;
-  width: 300px;
-  height: 92%;
+  width: 0%;
+  height: 100%;
   background-color: white;
   padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   z-index: 1000;
+  transition: width 0.3s ease;
+}
+.side-panel.show {
+  width: 25%;
 }
 
 .side-panel .panel-content {
   padding: 20px;
-  flex-grow: 1;
 }
 
 .side-panel .panel-actions {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 25px;
   padding: 10px 0 0;
+}
+
+.panel-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: scroll;
+}
+.panel-content h2 {
+    font-size: 26px;
+    padding-bottom: 10px;
 }
 
 button {
@@ -79,29 +103,70 @@ button {
 }
 
 button.close-button {
-  background-color: #ff4d4d;
+  background-color: #919191;
+  font-family: 'Montserrat', sans-serif;
   color: white;
   border: none;
   padding: 10px 20px;
   cursor: pointer;
-  font-weight: bold;
-  width: 120px;
+  font-weight: 500;
+  font-size: 15px;
+  max-width: 120px;
+  text-align: center;
 }
-
 button.close-button:hover {
-  background-color: #d63031;
+  background-color: #818181;
 }
 
-button.change-button {
+button.edit-button {
   background-color: #4caf50;
   color: white;
   border: none;
   padding: 10px 20px;
   cursor: pointer;
-  font-weight: bold;
-  width: 120px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+  max-width: 120px;
+  text-align: center;
+}
+button.edit-button:hover {
+  background-color: #388e3c;
 }
 
-button.change-button:hover {
-  background-color: #388e3c;
+.report-image-container {
+    width: 100%;
+    display: flex;    
+}
+
+.report-image {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+#type-input {
+    margin-left: 5px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 15px;
+}
+
+#report-status {
+    margin-left: 5px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 15px;
+}
+
+#description-input {
+    width: 100%;
+    margin-top: 10px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 15px;
+    resize: none;
 }
