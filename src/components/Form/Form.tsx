@@ -1,7 +1,10 @@
 import React, { useState } from "react";
+import Autocomplete from '../Autocomplete/Autocomplete';
+import { useNavigate } from "react-router-dom";
 import "./Form.css";
 
 const Form: React.FC = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullName: "",
     phoneNumber: "",
@@ -19,6 +22,14 @@ const Form: React.FC = () => {
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
+    }));
+  };
+
+  const handleLocationSelect = (location: string, lat: string, lon: string) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      location,
+      coordinate: `${lat}, ${lon}`,
     }));
   };
 
@@ -53,7 +64,8 @@ const Form: React.FC = () => {
       description: "",
     });
 
-    alert("Emergency report submitted successfully!");
+    // this will redirect to the confirmation page
+    navigate("/confirmation-page");
   };
 
   return (
@@ -104,13 +116,8 @@ const Form: React.FC = () => {
                 <label htmlFor="location">
                   Location <span>(required)</span>
                 </label>
-                <input
-                  type="text"
-                  id="location"
-                  name="location"
-                  value={formData.location}
-                  onChange={handleInputChange}
-                  required
+                <Autocomplete
+                  onSelect={handleLocationSelect}
                 />
               </div>
               <div className="input-field">

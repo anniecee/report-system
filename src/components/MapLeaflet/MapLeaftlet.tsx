@@ -1,10 +1,8 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import './MapLeaflet.css';
 import ReportsList, { Report } from '../Reports/ReportsList';
-
-
 
 const MapLeaflet: React.FC = () => {
   const [showPanel, setShowPanel] = useState(false);

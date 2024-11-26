@@ -1,0 +1,30 @@
+.confirmation-container {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #F6B332;
+    width: 500px;
+    padding: 50px;
+    border-radius: 10px;
+}
+
+.confirmation-container p {
+    text-align: center;
+    line-height: 1.5;
+}
+
+#confirmation-link a{
+    color: #F6B332;
+    text-decoration: underline;
+}
+#confirmation-link a:hover{
+    color: #ffa600;
+    text-decoration: underline;
+}
