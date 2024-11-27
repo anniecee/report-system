@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import md5 from 'md5'; 
 import 'leaflet/dist/leaflet.css';
@@ -18,7 +18,14 @@ const MapLeaflet: React.FC = () => {
   const [latitude, setLatitude] = useState<number | null>(null);
   const [longitude, setLongitude] = useState<number | null>(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [reports, setReports] = useState<Report[]>([]);
   const PASSWORD_HASH = '075ce5ba743720afbc7fb084cc975fe4'; // MD5 hash of 'namga'
+
+  useEffect(() => {
+    // Fetch all reports from local storage or API
+    const existingReports = JSON.parse(localStorage.getItem('emergencyReports') || '[]');
+    setReports(existingReports);
+  }, []);
 
   const handleMoreInfoClick = (report: Report) => {
     setSelectedReport(report);
@@ -84,15 +91,25 @@ const MapLeaflet: React.FC = () => {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             />
-            {/* Dynamically update the map center */}
-            {latitude && longitude && <UpdateMapCenter center={[latitude, longitude]} />}
-            {/* Display marker when clicked if latitude and longitude are available */}
-            {latitude && longitude && (
-            <Marker position={[latitude, longitude]}>
+            {/* Render markers for all reports */}
+            {reports.map((report, index) => (
+              <Marker
+                key={index}
+                position={[parseFloat(report.coordinate.split(', ')[0]), parseFloat(report.coordinate.split(', ')[1])]}
+                eventHandlers={{
+                  click: () => {
+                    handleMoreInfoClick(report);
+                  },
+                }}
+              >
                 <Popup>
-                {selectedReport?.location || 'Unknown Location'}. <br />
+                  {report.location}. <br />
                 </Popup>
-            </Marker>
+              </Marker>
+            ))}
+            {/* Dynamically update the map center */}
+            {selectedReport && selectedReport.coordinate && (
+              <UpdateMapCenter center={[parseFloat(selectedReport.coordinate.split(', ')[0]), parseFloat(selectedReport.coordinate.split(', ')[1])]} />
             )}
         </MapContainer>
         </div>
