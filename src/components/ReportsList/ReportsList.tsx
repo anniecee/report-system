@@ -16,17 +16,7 @@ interface ReportsList {
   onMoreInfoClick: (report: Report) => void;
 }
 
-const ReportsList: React.FC<ReportsList> = ({ onMoreInfoClick }) => {
-  const [reports, setReports] = useState<Report[]>([]);
-
-  useEffect(() => {
-    // retrieve data from localStorage
-    const storedReports = localStorage.getItem('emergencyReports');
-    if (storedReports) {
-      setReports(JSON.parse(storedReports));
-    }
-  }, []);
-
+const ReportsList: React.FC<{ onMoreInfoClick: (report: Report) => void; reports: Report[] }> = ({ onMoreInfoClick, reports }) => {
   return (
     <div className="marker-table">
       <table>
