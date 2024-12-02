@@ -5,10 +5,9 @@ import 'leaflet/dist/leaflet.css';
 import './MapLeaflet.css';
 import ReportsList, { Report } from '../ReportsList/ReportsList';
 
-// Helper Component to Update Map Center
 const UpdateMapCenter: React.FC<{ center: [number, number] }> = ({ center }) => {
     const map = useMap();
-    map.setView(center); // Dynamically update map center
+    map.setView(center); 
     return null;
 };
 
@@ -18,6 +17,9 @@ const MapLeaflet: React.FC = () => {
   const [latitude, setLatitude] = useState<number | null>(null);
   const [longitude, setLongitude] = useState<number | null>(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [passwordInput, setPasswordInput] = useState('');
+
   const PASSWORD_HASH = '075ce5ba743720afbc7fb084cc975fe4'; // MD5 hash of 'namga'
 
   const handleMoreInfoClick = (report: Report) => {
@@ -39,44 +41,45 @@ const MapLeaflet: React.FC = () => {
 
   const handleEditButton = () => {
     setIsEditing(true);
-  }
+  };
 
   const handleChangeStatus = () => {
-    const password = prompt('Enter password to change status:');
-    if (password) {
-      const hashedPassword = md5(password);
-      if (hashedPassword === PASSWORD_HASH) {
-        if (selectedReport) {
-            // Gather new values from the form
-            const updatedReport = {
-                ...selectedReport,
-                emergencyType: (document.getElementById('type-input') as HTMLInputElement)?.value || selectedReport.emergencyType,
-                status: (document.getElementById('report-status') as HTMLSelectElement)?.value || selectedReport.status,
-                description: (document.getElementById('description-input') as HTMLTextAreaElement)?.value || selectedReport.description,
-            };
-  
-            // Update localStorage
-            const storedReports = JSON.parse(localStorage.getItem('emergencyReports') || '[]');
-            const updatedReports = storedReports.map((report: Report) =>
-            report.timeReported === selectedReport.timeReported ? updatedReport : report
-            );
-            localStorage.setItem('emergencyReports', JSON.stringify(updatedReports));
-  
-            alert('Changes saved successfully!');
-            setIsEditing(false);
-            window.location.reload();
-        }
-      } else {
-        alert('Incorrect password!');
+    setShowPasswordModal(true); // Open the password modal
+  };
+
+  const handlePasswordSubmit = () => {
+    const hashedPassword = md5(passwordInput);
+    if (hashedPassword === PASSWORD_HASH) {
+      if (selectedReport) {
+        const updatedReport = {
+          ...selectedReport,
+          emergencyType: (document.getElementById('type-input') as HTMLInputElement)?.value || selectedReport.emergencyType,
+          status: (document.getElementById('report-status') as HTMLSelectElement)?.value || selectedReport.status,
+          description: (document.getElementById('description-input') as HTMLTextAreaElement)?.value || selectedReport.description,
+        };
+
+        const storedReports = JSON.parse(localStorage.getItem('emergencyReports') || '[]');
+        const updatedReports = storedReports.map((report: Report) =>
+          report.timeReported === selectedReport.timeReported ? updatedReport : report
+        );
+        localStorage.setItem('emergencyReports', JSON.stringify(updatedReports));
+
+        alert('Changes saved successfully!');
+        setIsEditing(false);
+        window.location.reload();
       }
+    } else {
+      alert('Incorrect password!');
     }
+    setShowPasswordModal(false); // Close the modal
+    setPasswordInput('');
   };
 
   return (
     <div className="map-container">
         <div className={`map-subcontainer ${showPanel ? 'resize' : ''}`}>
             <MapContainer
-                center={[latitude || 49.2827, longitude || -123.1207]} // Default center if latitude or longitude is null
+                center={[latitude || 49.2827, longitude || -123.1207]} 
                 zoom={13}
                 style={{ height: '100%', width: '100%' }}
             >
@@ -84,9 +87,7 @@ const MapLeaflet: React.FC = () => {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             />
-            {/* Dynamically update the map center */}
             {latitude && longitude && <UpdateMapCenter center={[latitude, longitude]} />}
-            {/* Display marker when clicked if latitude and longitude are available */}
             {latitude && longitude && (
             <Marker position={[latitude, longitude]}>
                 <Popup>
@@ -160,6 +161,28 @@ const MapLeaflet: React.FC = () => {
                 <button className="close-button" onClick={handleClosePanel}>
                     Close
                 </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Password Modal */}
+      {showPasswordModal && (
+        <div className="password-modal">
+          <div className="modal-content">
+            <h2>Please Enter Your Authorization Passkey</h2>
+            <input 
+              type="password" 
+              value={passwordInput} 
+              onChange={(e) => setPasswordInput(e.target.value)} 
+            />
+            <div>
+              <button className="blue-submit-button" onClick={handlePasswordSubmit}>
+                Submit
+              </button>
+              <button className="close-button2" onClick={() => setShowPasswordModal(false)}>
+                Close
+              </button>
             </div>
           </div>
         </div>
