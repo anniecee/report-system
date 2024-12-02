@@ -256,5 +256,61 @@ button {
   background-color: #222020;
 }
 
+@media screen and (max-width: 1366px) {
+    .side-panel {
+        width: 30%;
+    }
+    .side-panel.show {
+        width: 30%;
+    }
+    .map-subcontainer.resize {
+        width: 70%;
+    }
+}
 
+@media screen and (max-width: 400px) {
+  .side-panel {
+    width: 100%;
+  }
+  .side-panel.show {
+    width: 100%;
+  }
+  .map-subcontainer.resize {
+    width: 100%;
+  }
 
+  .marker-table {
+    font-size: 12px;
+  }
+
+  .link-button {
+    font-size: 10px;
+  }
+  
+  .marker-table table tbody tr td:nth-child(2),
+  .marker-table table tbody tr td:nth-child(3),
+  .marker-table table tbody tr td:nth-child(4),
+  .marker-table table thead tr th:nth-child(2),
+  .marker-table table thead tr th:nth-child(3),
+  .marker-table table thead tr th:nth-child(4) {
+    display: none;
+  }
+
+  .panel-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: scroll;
+    font-size: 12px;
+    }
+    .panel-content h2 {
+        font-size: 20px;
+        padding-bottom: 10px;
+    }
+    .panel-actions button {
+        font-size: 12px;
+    }
+    .side-panel .panel-content {
+        padding: 10px;
+    }
+}

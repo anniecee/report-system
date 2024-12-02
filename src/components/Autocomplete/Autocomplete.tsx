@@ -9,7 +9,7 @@ const Autocomplete: React.FC<AutocompleteProps> = React.memo(({ onSelect }) => {
   const [query, setQuery] = useState('');
   const [suggestions, setSuggestions] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const API_KEY = process.env.LEAFLET_MAP_API_KEY;
+  const API_KEY = import.meta.env.VITE_LEAFLET_MAP_API_KEY;
   
   useEffect(() => {
     if (query.length < 3) {

@@ -163,27 +163,6 @@ const MapLeaflet: React.FC = () => {
     setShowPasswordModal(true); // Open password modal
   };
 
-  const handleDelete = () => {
-    if (selectedReport) {
-      // Filter out the report to delete
-      const updatedReports = reports.filter(
-        (report) => report.timeReported !== selectedReport.timeReported
-      );
-  
-      // Update local storage
-      localStorage.setItem('emergencyReports', JSON.stringify(updatedReports));
-  
-      // Update state
-      setReports(updatedReports);
-      setFilteredReports(updatedReports);
-  
-      // Close the panel
-      setShowPanel(false);
-      alert('Report deleted successfully!');
-    }
-  };
-  
-
   return (
     <div className="map-container">
     <div className={`map-subcontainer ${showPanel ? 'resize' : ''}`}>
@@ -243,7 +222,7 @@ const MapLeaflet: React.FC = () => {
             {isEditing ? (
               <p>
                 <strong>Status:</strong>
-                <select name="report-status" id="report-status">
+                <select name="report-status" id="report-status" defaultValue={selectedReport.status}>
                   <option value="OPEN">OPEN</option>
                   <option value="CLOSED">CLOSED</option>
                 </select>
