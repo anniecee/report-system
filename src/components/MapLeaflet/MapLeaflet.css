@@ -134,6 +134,22 @@ button.edit-button:hover {
   background-color: #388e3c;
 }
 
+button.delete-button {
+    background-color: #c34933;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    max-width: 120px;
+    text-align: center;
+  }
+  button.delete-button:hover {
+    background-color: #a93f2c;
+  }
+
 .report-image-container {
     width: 100%;
     display: flex;    
@@ -184,8 +200,8 @@ button.edit-button:hover {
 }
 
 .modal-content {
-  background-color: black;
-  padding: 30px;
+  background-color: rgb(10, 10, 10);
+  padding: 30px 50px;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
@@ -197,8 +213,9 @@ button.edit-button:hover {
 
 .modal-content h2 {
   color: white;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: normal;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .modal-content input {
@@ -211,12 +228,13 @@ button.edit-button:hover {
 }
 
 button {
-  padding: 10px 20px;
+  padding: 12px 20px;
   font-size: 16px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .blue-submit-button {

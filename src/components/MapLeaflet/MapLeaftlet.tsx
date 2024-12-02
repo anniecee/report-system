@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents, Tooltip } from 'react-leaflet';
 import md5 from 'md5'; 
-import { MapContainer, TileLayer, Marker, , useMap } from 'react-leaflet';
-import md5 from 'md5';
 import 'leaflet/dist/leaflet.css';
 import './MapLeaflet.css';
 import ReportsList, { Report } from '../ReportsList/ReportsList';
@@ -43,17 +41,18 @@ const MapLeaflet: React.FC = () => {
   const [longitude, setLongitude] = useState<number | null>(null);
   const [currentLocation, setCurrentLocation] = useState<[number, number] | null>(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [isDeleteAction, setIsDeleteAction] = useState(false); // Track delete action
   const [reports, setReports] = useState<Report[]>([]);
   const [filteredReports, setFilteredReports] = useState<Report[]>([]);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [passwordInput, setPasswordInput] = useState('');
-  const PASSWORD_HASH = '075ce5ba743720afbc7fb084cc975fe4'; // MD5 hash of 'namga'
+  const PASSWORD_HASH = '075ce5ba743720afbc7fb084cc975fe4';
+  const markerRefs = useRef<{ [key: string]: L.Marker | null }>({}); // Store marker references
 
   useEffect(() => {
     // Fetch all reports from local storage or API
     const existingReports = JSON.parse(localStorage.getItem('emergencyReports') || '[]');
     setReports(existingReports);
-    setFilteredReports(existingReports); // Initialize filtered reports
   }, []);
 
   const handleBoundsChange = (bounds: any) => {
@@ -68,7 +67,6 @@ const MapLeaflet: React.FC = () => {
       return bounds.contains([lat, lon]);
     });
     
-    console.log('Filtered reports:', filtered.length); // Debug log
     setFilteredReports(filtered);
   };
 
@@ -94,6 +92,11 @@ const MapLeaflet: React.FC = () => {
       const [lat, lon] = report.coordinate.split(',').map(Number);
       setLatitude(lat);
       setLongitude(lon);
+      // Open the marker's popup
+      const marker = markerRefs.current[report.timeReported];
+      if (marker) {
+        marker.openPopup();
+      }
     }
     setIsEditing(false);
   };
@@ -114,30 +117,72 @@ const MapLeaflet: React.FC = () => {
   const handlePasswordSubmit = () => {
     const hashedPassword = md5(passwordInput);
     if (hashedPassword === PASSWORD_HASH) {
-      if (selectedReport) {
-        const updatedReport = {
-          ...selectedReport,
-          emergencyType: (document.getElementById('type-input') as HTMLInputElement)?.value || selectedReport.emergencyType,
-          status: (document.getElementById('report-status') as HTMLSelectElement)?.value || selectedReport.status,
-          description: (document.getElementById('description-input') as HTMLTextAreaElement)?.value || selectedReport.description,
-        };
-
-        const storedReports = JSON.parse(localStorage.getItem('emergencyReports') || '[]');
-        const updatedReports = storedReports.map((report: Report) =>
-          report.timeReported === selectedReport.timeReported ? updatedReport : report
-        );
-        localStorage.setItem('emergencyReports', JSON.stringify(updatedReports));
-
-        alert('Changes saved successfully!');
-        setIsEditing(false);
-        window.location.reload();
+      if (isDeleteAction) {
+        // Perform delete logic
+        if (selectedReport) {
+          const updatedReports = reports.filter(
+            (report) => report.timeReported !== selectedReport.timeReported
+          );
+  
+          localStorage.setItem('emergencyReports', JSON.stringify(updatedReports));
+          setReports(updatedReports);
+          setFilteredReports(updatedReports);
+  
+          alert('Report deleted successfully!');
+          setShowPanel(false); // Close side panel
+        }
+        setIsDeleteAction(false); // Reset delete action
+      } else {
+        // Perform other password-protected actions
+        if (selectedReport) {
+          const updatedReport = {
+            ...selectedReport,
+            emergencyType: (document.getElementById('type-input') as HTMLInputElement)?.value || selectedReport.emergencyType,
+            status: (document.getElementById('report-status') as HTMLSelectElement)?.value || selectedReport.status,
+            description: (document.getElementById('description-input') as HTMLTextAreaElement)?.value || selectedReport.description,
+          };
+  
+          const storedReports = JSON.parse(localStorage.getItem('emergencyReports') || '[]');
+          const updatedReports = storedReports.map((report: Report) =>
+            report.timeReported === selectedReport.timeReported ? updatedReport : report
+          );
+          localStorage.setItem('emergencyReports', JSON.stringify(updatedReports));
+  
+          alert('Changes saved successfully!');
+        }
       }
+      setShowPasswordModal(false); // Close modal
     } else {
       alert('Incorrect password!');
     }
-    setShowPasswordModal(false); // Close the modal
-    setPasswordInput('');
+    setPasswordInput(''); // Clear password input
+  };  
+
+  const handleDeleteRequest = () => {
+    setIsDeleteAction(true); // Mark delete action
+    setShowPasswordModal(true); // Open password modal
   };
+
+  const handleDelete = () => {
+    if (selectedReport) {
+      // Filter out the report to delete
+      const updatedReports = reports.filter(
+        (report) => report.timeReported !== selectedReport.timeReported
+      );
+  
+      // Update local storage
+      localStorage.setItem('emergencyReports', JSON.stringify(updatedReports));
+  
+      // Update state
+      setReports(updatedReports);
+      setFilteredReports(updatedReports);
+  
+      // Close the panel
+      setShowPanel(false);
+      alert('Report deleted successfully!');
+    }
+  };
+  
 
   return (
     <div className="map-container">
@@ -153,7 +198,7 @@ const MapLeaflet: React.FC = () => {
         />
         <MoveToCurrentLocation location={currentLocation} />
         {currentLocation && (
-          <Marker position={currentLocation}>
+          <Marker position={currentLocation} >
             <Tooltip permanent direction="top">You are here!</Tooltip>
           </Marker>
         )}
@@ -164,6 +209,11 @@ const MapLeaflet: React.FC = () => {
             eventHandlers={{
               click: () => handleMoreInfoClick(report),
             }}
+            ref={(el) => {
+                if (el) {
+                  markerRefs.current[report.timeReported] = el;
+                }
+            }}
           >
             <Popup>{report.location}</Popup>
           </Marker>
@@ -172,8 +222,7 @@ const MapLeaflet: React.FC = () => {
       </MapContainer>
     </div>
     <ReportsList onMoreInfoClick={handleMoreInfoClick} reports={filteredReports} />
-
-      {showPanel && selectedReport && (
+     {showPanel && selectedReport && (
         <div className={`side-panel ${showPanel ? 'show' : ''}`}>
           <div className="panel-content">
             <h2>Emergency Report Details</h2>
@@ -238,9 +287,14 @@ const MapLeaflet: React.FC = () => {
             )}
             <div className="panel-actions">
               {isEditing ? (
-                <button className="edit-button" onClick={handleChangeStatus}>
-                  Confirm
-                </button>
+                <>
+                    <button className="edit-button" onClick={handleChangeStatus}>
+                        Confirm
+                    </button>
+                    <button className="delete-button" onClick={handleDeleteRequest}>
+                        Delete
+                    </button>
+                </>
               ) : (
                 <button className="edit-button" onClick={handleEditButton}>
                   Edit
