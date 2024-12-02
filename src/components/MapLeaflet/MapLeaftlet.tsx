@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Tooltip, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents, Tooltip } from 'react-leaflet';
+import md5 from 'md5'; 
+import { MapContainer, TileLayer, Marker, , useMap } from 'react-leaflet';
 import md5 from 'md5';
 import 'leaflet/dist/leaflet.css';
 import './MapLeaflet.css';
@@ -17,6 +19,23 @@ const MoveToCurrentLocation: React.FC<{ location: [number, number] | null }> = (
   return null;
 };
 
+const MapEventsHandler: React.FC<{ onBoundsChange: (bounds: any) => void }> = ({ onBoundsChange }) => {
+  const map = useMap();
+  
+  useMapEvents({
+    moveend: () => {
+      const bounds = map.getBounds();
+      onBoundsChange(bounds);
+    },
+    zoomend: () => {
+      const bounds = map.getBounds();
+      onBoundsChange(bounds);
+    }
+  });
+  
+  return null;
+};
+
 const MapLeaflet: React.FC = () => {
   const [showPanel, setShowPanel] = useState(false);
   const [selectedReport, setSelectedReport] = useState<Report | null>(null);
@@ -24,10 +43,34 @@ const MapLeaflet: React.FC = () => {
   const [longitude, setLongitude] = useState<number | null>(null);
   const [currentLocation, setCurrentLocation] = useState<[number, number] | null>(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [reports, setReports] = useState<Report[]>([]);
+  const [filteredReports, setFilteredReports] = useState<Report[]>([]);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [passwordInput, setPasswordInput] = useState('');
-
   const PASSWORD_HASH = '075ce5ba743720afbc7fb084cc975fe4'; // MD5 hash of 'namga'
+
+  useEffect(() => {
+    // Fetch all reports from local storage or API
+    const existingReports = JSON.parse(localStorage.getItem('emergencyReports') || '[]');
+    setReports(existingReports);
+    setFilteredReports(existingReports); // Initialize filtered reports
+  }, []);
+
+  const handleBoundsChange = (bounds: any) => {
+    if (!reports.length) return;
+    
+    const filtered = reports.filter(report => {
+      if (!report.coordinate) return false;
+      
+      const [lat, lon] = report.coordinate.split(',').map(Number);
+      if (isNaN(lat) || isNaN(lon)) return false;
+      
+      return bounds.contains([lat, lon]);
+    });
+    
+    console.log('Filtered reports:', filtered.length); // Debug log
+    setFilteredReports(filtered);
+  };
 
   // Use Geolocation API to get the user's location
   useEffect(() => {
@@ -98,25 +141,37 @@ const MapLeaflet: React.FC = () => {
 
   return (
     <div className="map-container">
-      <div className={`map-subcontainer ${showPanel ? 'resize' : ''}`}>
-        <MapContainer
-          center={currentLocation || [latitude || 49.2827, longitude || -123.1207]} // Default to Vancouver if no location is available
-          zoom={13}
-          style={{ height: '100%', width: '100%' }}
-        >
-          <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          />
-          <MoveToCurrentLocation location={currentLocation} />
-          {currentLocation && (
-            <Marker position={currentLocation}>
-              <Tooltip permanent direction="top">You are here!</Tooltip>
-            </Marker>
-          )}
-        </MapContainer>
-      </div>
-      <ReportsList onMoreInfoClick={handleMoreInfoClick} />
+    <div className={`map-subcontainer ${showPanel ? 'resize' : ''}`}>
+      <MapContainer
+        center={[latitude || 49.2827, longitude || -123.1207]}
+        zoom={13}
+        style={{ height: '100%', width: '100%' }}
+      >
+        <TileLayer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        />
+        <MoveToCurrentLocation location={currentLocation} />
+        {currentLocation && (
+          <Marker position={currentLocation}>
+            <Tooltip permanent direction="top">You are here!</Tooltip>
+          </Marker>
+        )}
+        {filteredReports.map((report, index) => (
+          <Marker
+            key={index}
+            position={[parseFloat(report.coordinate.split(',')[0]), parseFloat(report.coordinate.split(',')[1])]}
+            eventHandlers={{
+              click: () => handleMoreInfoClick(report),
+            }}
+          >
+            <Popup>{report.location}</Popup>
+          </Marker>
+        ))}
+        <MapEventsHandler onBoundsChange={handleBoundsChange} />
+      </MapContainer>
+    </div>
+    <ReportsList onMoreInfoClick={handleMoreInfoClick} reports={filteredReports} />
 
       {showPanel && selectedReport && (
         <div className={`side-panel ${showPanel ? 'show' : ''}`}>

@@ -14,7 +14,7 @@ const Autocomplete: React.FC<AutocompleteProps> = React.memo(({ onSelect }) => {
   const API_KEY = '6736bc18c1e9a621074081chz82fc25';
 
   useEffect(() => {
-    if (query.length < 5) {
+    if (query.length < 3) {
       setSuggestions([]);
       return;
     }
