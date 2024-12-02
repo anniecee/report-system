@@ -62,7 +62,7 @@ const ReportsList: React.FC<ReportsListProps> = ({ onMoreInfoClick }) => {
     }
     return sortConfig.direction === 'ascending' ? ' ▲' : ' ▼';
   };
-
+    
   return (
     <div className="marker-table">
       <table>

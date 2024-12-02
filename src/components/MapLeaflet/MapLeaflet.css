@@ -134,6 +134,22 @@ button.edit-button:hover {
   background-color: #388e3c;
 }
 
+button.delete-button {
+    background-color: #c34933;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    max-width: 120px;
+    text-align: center;
+  }
+  button.delete-button:hover {
+    background-color: #a93f2c;
+  }
+
 .report-image-container {
     width: 100%;
     display: flex;    
@@ -169,4 +185,132 @@ button.edit-button:hover {
     border-radius: 5px;
     font-size: 15px;
     resize: none;
+}
+.password-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: rgb(10, 10, 10);
+  padding: 30px 50px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 20px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content h2 {
+  color: white;
+  font-size: 18px;
+  font-weight: normal;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.modal-content input {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+  max-width: 300px;
+}
+
+button {
+  padding: 12px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.blue-submit-button {
+  background-color: #007bff;
+  color: white;
+  margin-right: 20px;
+}
+
+.blue-submit-button:hover {
+  background-color: #0056b3;
+}
+
+.close-button2 {
+  background-color: #919191;
+  color: white;
+}
+
+.close-button2:hover {
+  background-color: #222020;
+}
+
+@media screen and (max-width: 1366px) {
+    .side-panel {
+        width: 30%;
+    }
+    .side-panel.show {
+        width: 30%;
+    }
+    .map-subcontainer.resize {
+        width: 70%;
+    }
+}
+
+@media screen and (max-width: 400px) {
+  .side-panel {
+    width: 100%;
+  }
+  .side-panel.show {
+    width: 100%;
+  }
+  .map-subcontainer.resize {
+    width: 100%;
+  }
+
+  .marker-table {
+    font-size: 12px;
+  }
+
+  .link-button {
+    font-size: 10px;
+  }
+  
+  .marker-table table tbody tr td:nth-child(2),
+  .marker-table table tbody tr td:nth-child(3),
+  .marker-table table tbody tr td:nth-child(4),
+  .marker-table table thead tr th:nth-child(2),
+  .marker-table table thead tr th:nth-child(3),
+  .marker-table table thead tr th:nth-child(4) {
+    display: none;
+  }
+
+  .panel-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: scroll;
+    font-size: 12px;
+    }
+    .panel-content h2 {
+        font-size: 20px;
+        padding-bottom: 10px;
+    }
+    .panel-actions button {
+        font-size: 12px;
+    }
+    .side-panel .panel-content {
+        padding: 10px;
+    }
 }
