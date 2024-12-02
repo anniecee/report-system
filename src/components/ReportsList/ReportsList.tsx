@@ -31,11 +31,11 @@ const ReportsList: React.FC<ReportsListProps> = ({ onMoreInfoClick }) => {
     }
   }, []);
 
-  const sortedReports = useMemo(() => {
-    const sortableReports = [...reports];
-    sortableReports.sort((a, b) => {
-      const aValue = new Date(a[sortConfig.key]).getTime();
-      const bValue = new Date(b[sortConfig.key]).getTime();
+  const sortedReports = useMemo(() => { 
+    const sortableReports = [...reports]; 
+    sortableReports.sort((a, b) => { 
+      const aValue = sortConfig.key === 'timeReported' ? new Date(a[sortConfig.key]).getTime() : a[sortConfig.key]; 
+      const bValue = sortConfig.key === 'timeReported' ? new Date(b[sortConfig.key]).getTime() : b[sortConfig.key];
 
       if (aValue < bValue) {
         return sortConfig.direction === 'ascending' ? -1 : 1;
@@ -73,7 +73,7 @@ const ReportsList: React.FC<ReportsListProps> = ({ onMoreInfoClick }) => {
             <th onClick={() => requestSort('timeReported')} style={{ cursor: 'pointer' }}>
               Time Reported{getSortIndicator('timeReported')}
             </th>
-            <th>Status</th>
+            <th onClick={() => requestSort('status')} style={{ cursor: 'pointer' }}> Status{getSortIndicator('status')} </th>
             <th>Other</th>
           </tr>
         </thead>
