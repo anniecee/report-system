@@ -9,7 +9,7 @@ const Autocomplete: React.FC<AutocompleteProps> = React.memo(({ onSelect }) => {
   const [query, setQuery] = useState('');
   const [suggestions, setSuggestions] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const API_KEY = import.meta.env.VITE_LEAFLET_MAP_API_KEY;
+  const API_KEY = import.meta.env.VITE_GEOCODE_MAP_API_KEY;
   
   useEffect(() => {
     if (query.length < 3) {
@@ -50,6 +50,7 @@ const Autocomplete: React.FC<AutocompleteProps> = React.memo(({ onSelect }) => {
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Search for an address"
         className="autocomplete-input"
+        required
       />
       {isLoading && <div className="loading">Loading...</div>}
       {suggestions.length > 0 && (

@@ -89,7 +89,7 @@ const Form: React.FC = () => {
                   name="fullName"
                   value={formData.fullName}
                   onChange={handleInputChange}
-                  pattern="[A-Za-z]*"
+                  pattern="[A-Za-z ]*"
                   required
                 />
               </div>
@@ -103,7 +103,7 @@ const Form: React.FC = () => {
                   name="phoneNumber"
                   value={formData.phoneNumber}
                   onChange={handleInputChange}
-                  pattern="[0-9]*"
+                  pattern="[0-9- ]*"
                   required
                 />
               </div>

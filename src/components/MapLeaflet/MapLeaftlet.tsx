@@ -4,6 +4,13 @@ import md5 from 'md5';
 import 'leaflet/dist/leaflet.css';
 import './MapLeaflet.css';
 import ReportsList, { Report } from '../ReportsList/ReportsList';
+import L from 'leaflet';
+import customURL from '../../assets/marker-icon.png';
+
+const customMarker = new L.Icon({
+    iconUrl: customURL,
+    iconSize: [38, 38],
+});
 
 const MoveToCurrentLocation: React.FC<{ location: [number, number] | null }> = ({ location }) => {
   const map = useMap();
@@ -177,7 +184,7 @@ const MapLeaflet: React.FC = () => {
         />
         <MoveToCurrentLocation location={currentLocation} />
         {currentLocation && (
-          <Marker position={currentLocation} >
+          <Marker position={currentLocation} icon={customMarker}>
             <Tooltip permanent direction="top">You are here!</Tooltip>
           </Marker>
         )}
@@ -193,6 +200,7 @@ const MapLeaflet: React.FC = () => {
                   markerRefs.current[report.timeReported] = el;
                 }
             }}
+            icon={customMarker}
           >
             <Popup>{report.location}</Popup>
           </Marker>
