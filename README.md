@@ -1,43 +1,37 @@
 # Metro Vancouver Emergency Reporting System
 
-The Metro Vancouver 9-1-1 Emergency Call Answer Service by transitioning from a legacy system to a web-based platform. This new platform allows both the public and E-Comm operators to report, review, and monitor emergencies more efficiently.
+A web-based platform for the Metro Vancouver 9-1-1 Emergency Call Answer Service (which processes ~1M calls/year): the public can submit emergency reports online, and E-Comm operators can review, update, and resolve them, with interactive mapping of emergency locations for situational awareness.
 
----
+## Features
 
-## Project Overview
+### Emergency Reporting
+- Submit reports with reporter name/phone, nature and location of the emergency, optional image link and comments
 
-### Scenario
-The Metro Vancouver 9-1-1 Emergency Call Answer Service processes approximately one million calls annually. This system, developed for E-Comm, enables:
-- Civilians to submit emergency reports online.
-- Operators to review, update, and resolve emergency statuses efficiently.
-- Interactive mapping of emergency locations for better situational awareness.
+### Map Integration
+- Emergency locations on an interactive map (Leaflet + OpenStreetMap)
+- Click markers for details, highlight markers from the report list
+- Report list updates dynamically with map zoom
 
----
+### Report Management
+- Edit or delete reports with passcode protection
 
-### Key Features
-#### Emergency Reporting:
-- Users can submit reports with details like:
-  - Reporting person's name and phone number.
-  - Nature and location of the emergency.
-  - Optional image link and comments.
+### User Feedback
+- Real-time input validation and error feedback
 
-#### Map Integration:
-- Emergency locations are displayed on a map using the **Leaflet API** and **OpenStreetMaps**. Users can:
-  - View details by interacting with markers.
-  - Highlight corresponding markers by selecting emergencies from the list.
-  - See a dynamically updated list based on the map's zoom level.
+## Tech Stack
+- React 18, TypeScript, Vite
+- Leaflet / react-leaflet, OpenStreetMap
+- Browser local storage for data persistence
 
-#### Report Management:
-- Modify or delete reports with password protection using **MD5 hashing** for secure passcode storage.
+## Getting Started
 
-#### User Feedback:
-- The system provides real-time error and input validation feedback.
+Prerequisites: Node.js 18+
 
----
+```bash
+git clone https://github.com/anniecee/report-system.git
+cd report-system
+npm install
+npm run dev
+```
 
-## Technologies Used
-- **Frontend**: HTML, CSS, JavaScript (TypeScript optional).
-- **Map API**: Leaflet with OpenStreetMaps.
-- **Data Storage**: DOM Storage API.
-- **Security**: MD5 for passcode hashing.
-- **Design Frameworks**: Optional use of libraries like Bootstrap or React.
+Then open the local URL Vite prints (usually http://localhost:5173).
